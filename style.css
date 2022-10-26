@@ -22,13 +22,20 @@ body{
     margin-bottom: 36px;
 }
 
+.container{
+    padding: 24px;
+    border-radius: 10px;
+    background-color: rgb(34, 29, 66);
+    margin-bottom: 36px;
+}
+
 .calculator{
     display: grid;
     min-height: 100vh;
     grid-template-columns: repeat(4, 100px);
     grid-template-rows: minmax(120px, auto) repeat(5, 100px);
     grid-gap: 5px;
-    margin-bottom: 36px;
+    margin-bottom: 24px;
 }
 
 .calculator > button{

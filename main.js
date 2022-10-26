@@ -15,24 +15,28 @@ let operand = undefined;
 
 //functions for the operations
 function add(previousNumber, currentNumber){
-    answer = (previousNumber + currentNumber).toFixed(3);
+    answer = previousNumber + currentNumber;
     currentOperand.innerText = answer;
 };
 
 function subtract(previousNumber, currentNumber){
-    answer = (currentNumber - previousNumber).toFixed(3);
+    answer = currentNumber - previousNumber;
+    if(answer !== answer % 1) {
+        answer = currentNumber - previousNumber;
+    }
     currentOperand.innerText = answer;
 };
 
 function multiply(previousNumber, currentNumber){
-    answer = (previousNumber * currentNumber).toFixed(3);
+    answer = previousNumber * currentNumber;
     currentOperand.innerText = answer;
 };
 
-function divide(previousNumber, currentNumber){
-    answer = (currentNumber / previousNumber).toFixed(3);
+function divide(previousNumber, currentNumber){ 
+    answer = currentNumber / previousNumber;
     currentOperand.innerText = answer;
 
+    //error handling for when the user tryes to divide by 0
     if(previousNumber === 0 || currentNumber === 0){
         alert("You cannot divide with a 0")
         currentNumber = "";
@@ -59,6 +63,8 @@ function operate(previousNumber, currentNumber, operand){
         case "÷":
             divide(previousNumber, currentNumber);
             break;
+        default:
+            return;
     }
 }
 
@@ -82,25 +88,21 @@ numbers.forEach(num => {
 //display
 operands.forEach(opr => {
     opr.addEventListener('click', () => {
-        if(typeof currentNumber !== ""){
-            console.log(opr.textContent)
-            operand = opr.textContent;
-            previousNumber = currentNumber;
-            previousOperand.innerText = previousNumber + operand;
-            currentNumber = "";
-            currentOperand.innerText = "";
-            document.getElementById("decimal").disabled = false;
-        } else if(typeof currentNumber === ""){
-            opr.disabled = true;
-        }
-        else if(operand !== undefined && currentNumber !== "" && previousNumber !== ""){
+        if(currentNumber === "") return
+        if(previousNumber !== ""){
             currentNumber = parseFloat(currentNumber);
             previousNumber = parseFloat(previousNumber);
             previousOperand.innerText = previousNumber + operand + currentNumber;
             operate(currentNumber, previousNumber, operand);
             currentNumber = answer;
         } 
-        
+        console.log(opr.textContent)
+        operand = opr.textContent;
+        previousNumber = currentNumber;
+        previousOperand.innerText = previousNumber + operand;
+        currentNumber = "";
+        currentOperand.innerText = "";
+        document.getElementById("decimal").disabled = false;
     });
 });
 
@@ -120,7 +122,8 @@ clearBtn.addEventListener('click', () => {
     previousOperand.innerText = "";
 });
 
-//calls the operate function and calculates the numbers 
+//calls the operate function and calculates the numbers, also has error handling for when equals is
+//clicked with missing values
 equals.addEventListener('click', () => {
     if(currentNumber === "" || previousNumber === "" || operand === undefined) {
         alert("You have to input all the required variables and operand to perfom a calulation")
