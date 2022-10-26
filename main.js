@@ -78,8 +78,10 @@ function show(num){
     };
 }
 
+//for the numbers
 numbers.forEach(num => {
     num.addEventListener('click', () => {
+        
         show(num.textContent);
     });
 });
@@ -141,6 +143,75 @@ equals.addEventListener('click', () => {
     }
 });
 
-function keyboardSupport(e){
 
-};
+
+
+
+//keyboard activites for number
+window.addEventListener('keydown', function(e){
+    const numKeys = document.querySelector(`button[data-key="${e.keyCode}"]`);
+    if(!numKeys.classList.contains("data-number")) return; 
+            show(numKeys.textContent)
+})
+
+//keyboard activites for operand
+window.addEventListener('keydown', function(e){
+    const operatorKeys = document.querySelector(`button[data-key="${e.keyCode}"]`);
+
+    if(!operatorKeys.classList.contains("data-operation")) return; 
+
+    if(currentNumber === "") return
+    if(previousNumber !== ""){
+        currentNumber = parseFloat(currentNumber);
+        previousNumber = parseFloat(previousNumber);
+        previousOperand.innerText = previousNumber + operand + currentNumber;
+        operate(currentNumber, previousNumber, operand);
+        currentNumber = answer;
+    } 
+    console.log(operatorKeys.textContent)
+    operand = operatorKeys.textContent;
+    previousNumber = currentNumber;
+    previousOperand.innerText = previousNumber + operand;
+    currentNumber = "";
+    currentOperand.innerText = "";
+    document.getElementById("decimal").disabled = false;
+})
+
+//keyboard equals (enter)
+window.addEventListener('keydown', function(e){
+    const equalsKeys = document.querySelector(`button[data-key="${e.keyCode}"]`);
+    if(!equalsKeys.classList.contains("data-equals")) return; 
+    if(currentNumber === "" || previousNumber === "" || operand === undefined) {
+        alert("You have to input all the required variables and operand to perfom a calulation")
+        currentNumber = "";
+        previousNumber = "";
+        operand = undefined;
+        currentOperand.innerText = "";
+        previousOperand.innerText = "";
+    } else {
+        currentNumber = parseFloat(currentNumber);
+        previousNumber = parseFloat(previousNumber);
+        previousOperand.innerText = previousNumber + operand + currentNumber;
+        operate(currentNumber, previousNumber, operand);
+        currentNumber = answer;
+    }  
+})
+
+//keyboard activites for delete (backspace)
+window.addEventListener('keydown', function(e){
+    const deleteKey = document.querySelector(`button[data-key="${e.keyCode}"]`);
+    if(!deleteKey.classList.contains("data-delete")) return; 
+    currentNumber = currentNumber.toString().slice(0, -1);
+    currentOperand.innerText = currentNumber;
+})
+
+//keyboard activites for clear (c)
+window.addEventListener('keydown', function(e){
+    const clearKey = document.querySelector(`button[data-key="${e.keyCode}"]`);
+    if(!clearKey.classList.contains("data-all-clear")) return; 
+    currentNumber = "";
+    previousNumber = "";
+    operand = undefined;
+    currentOperand.innerText = "";
+    previousOperand.innerText = "";
+})
