@@ -20,7 +20,7 @@ function add(previousNumber, currentNumber){
 };
 
 function subtract(previousNumber, currentNumber){
-    answer = previousNumber - currentNumber;
+    answer = currentNumber - previousNumber;
     currentOperand.innerText = answer;
 };
 
@@ -30,8 +30,18 @@ function multiply(previousNumber, currentNumber){
 };
 
 function divide(previousNumber, currentNumber){
-    answer = previousNumber / currentNumber;
+    answer = currentNumber / previousNumber;
     currentOperand.innerText = answer;
+
+    if(previousNumber === 0 || currentNumber === 0){
+        alert("You cannot divide with a 0")
+        currentNumber = "";
+        previousNumber = "";
+        operand = undefined;
+        answer = "";
+        currentOperand.innerText = "";
+        previousOperand.innerText = "";
+    };
 };
 
 //this function will take the numbers and an operand and call the one of the operation functions
@@ -57,11 +67,13 @@ function show(num){
     console.log(num)
     currentNumber += num;
     currentOperand.innerText = currentNumber;
+    if(currentNumber.includes(".")) {
+        document.getElementById("decimal").disabled = true;
+    };
 }
 
 numbers.forEach(num => {
     num.addEventListener('click', () => {
-        
         show(num.textContent);
     });
 });
@@ -76,6 +88,7 @@ operands.forEach(opr => {
         previousOperand.innerText = previousNumber + operand;
         currentNumber = "";
         currentOperand.innerText = "";
+        document.getElementById("decimal").disabled = false;
     });
 });
 
@@ -96,8 +109,15 @@ clearBtn.addEventListener('click', () => {
     previousOperand.innerText = "";
 });
 
+//calls the operate function and calculates the numbers 
 equals.addEventListener('click', () => {
     currentNumber = parseFloat(currentNumber);
     previousNumber = parseFloat(previousNumber);
+    previousOperand.innerText = previousNumber + operand + currentNumber;
     operate(currentNumber, previousNumber, operand);
+    currentNumber = answer;
+
+    if(currentNumber === "" || previousNumber === "" || operand === "") {
+        alert("You have to input all the required variables and operand to perfom a calulation")
+    }
 });
