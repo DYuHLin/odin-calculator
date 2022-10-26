@@ -15,22 +15,22 @@ let operand = undefined;
 
 //functions for the operations
 function add(previousNumber, currentNumber){
-    answer = previousNumber + currentNumber;
+    answer = (previousNumber + currentNumber).toFixed(3);
     currentOperand.innerText = answer;
 };
 
 function subtract(previousNumber, currentNumber){
-    answer = currentNumber - previousNumber;
+    answer = (currentNumber - previousNumber).toFixed(3);
     currentOperand.innerText = answer;
 };
 
 function multiply(previousNumber, currentNumber){
-    answer = previousNumber * currentNumber;
+    answer = (previousNumber * currentNumber).toFixed(3);
     currentOperand.innerText = answer;
 };
 
 function divide(previousNumber, currentNumber){
-    answer = currentNumber / previousNumber;
+    answer = (currentNumber / previousNumber).toFixed(3);
     currentOperand.innerText = answer;
 
     if(previousNumber === 0 || currentNumber === 0){
@@ -82,16 +82,27 @@ numbers.forEach(num => {
 //display
 operands.forEach(opr => {
     opr.addEventListener('click', () => {
-        console.log(opr.textContent)
-        operand = opr.textContent;
-        previousNumber = currentNumber;
-        previousOperand.innerText = previousNumber + operand;
-        currentNumber = "";
-        currentOperand.innerText = "";
-        document.getElementById("decimal").disabled = false;
+        if(typeof currentNumber !== ""){
+            console.log(opr.textContent)
+            operand = opr.textContent;
+            previousNumber = currentNumber;
+            previousOperand.innerText = previousNumber + operand;
+            currentNumber = "";
+            currentOperand.innerText = "";
+            document.getElementById("decimal").disabled = false;
+        } else if(typeof currentNumber === ""){
+            opr.disabled = true;
+        }
+        else if(operand !== undefined && currentNumber !== "" && previousNumber !== ""){
+            currentNumber = parseFloat(currentNumber);
+            previousNumber = parseFloat(previousNumber);
+            previousOperand.innerText = previousNumber + operand + currentNumber;
+            operate(currentNumber, previousNumber, operand);
+            currentNumber = answer;
+        } 
+        
     });
 });
-
 
 //for backspacing the current number
 deleteBtn.addEventListener('click', () => {
@@ -111,13 +122,22 @@ clearBtn.addEventListener('click', () => {
 
 //calls the operate function and calculates the numbers 
 equals.addEventListener('click', () => {
-    currentNumber = parseFloat(currentNumber);
-    previousNumber = parseFloat(previousNumber);
-    previousOperand.innerText = previousNumber + operand + currentNumber;
-    operate(currentNumber, previousNumber, operand);
-    currentNumber = answer;
-
-    if(currentNumber === "" || previousNumber === "" || operand === "") {
+    if(currentNumber === "" || previousNumber === "" || operand === undefined) {
         alert("You have to input all the required variables and operand to perfom a calulation")
+        currentNumber = "";
+        previousNumber = "";
+        operand = undefined;
+        currentOperand.innerText = "";
+        previousOperand.innerText = "";
+    } else {
+        currentNumber = parseFloat(currentNumber);
+        previousNumber = parseFloat(previousNumber);
+        previousOperand.innerText = previousNumber + operand + currentNumber;
+        operate(currentNumber, previousNumber, operand);
+        currentNumber = answer;
     }
 });
+
+function keyboardSupport(e){
+
+};

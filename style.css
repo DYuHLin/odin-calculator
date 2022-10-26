@@ -27,13 +27,14 @@ body{
     min-height: 100vh;
     grid-template-columns: repeat(4, 100px);
     grid-template-rows: minmax(120px, auto) repeat(5, 100px);
+    grid-gap: 5px;
     margin-bottom: 36px;
 }
 
 .calculator > button{
     cursor: pointer;
     font-size: 1.5rem;
-    border: 1px solid black;
+    border: 2px solid black;
     outline: none;
     background-color: lightgray;
 }
@@ -49,6 +50,7 @@ body{
 .display{
     grid-column: 1 / -1;
     background-color: rgb(86, 73, 167);
+    border: 2px solid black;
     display: flex;
     align-items: flex-end;
     justify-content: space-around;
