@@ -70,11 +70,11 @@ function operate(previousNumber, currentNumber, operand){
 
 //this function and event listeners are meant to show the numbers on the display
 function show(num){
-    console.log(num)
     currentNumber += num;
     currentOperand.innerText = currentNumber;
     if(currentNumber.includes(".")) {
         document.getElementById("decimal").disabled = true;
+        document.querySelector(`button[data-key="190"]`).disabled = true;
     };
 }
 
@@ -98,7 +98,7 @@ operands.forEach(opr => {
             operate(currentNumber, previousNumber, operand);
             currentNumber = answer;
         } 
-        console.log(opr.textContent)
+
         operand = opr.textContent;
         previousNumber = currentNumber;
         previousOperand.innerText = previousNumber + operand;
@@ -110,7 +110,6 @@ operands.forEach(opr => {
 
 //for backspacing the current number
 deleteBtn.addEventListener('click', () => {
-    console.log(currentNumber);
     currentNumber = currentNumber.toString().slice(0, -1);
     currentOperand.innerText = currentNumber;
 });
@@ -168,7 +167,6 @@ window.addEventListener('keydown', function(e){
         operate(currentNumber, previousNumber, operand);
         currentNumber = answer;
     } 
-    console.log(operatorKeys.textContent)
     operand = operatorKeys.textContent;
     previousNumber = currentNumber;
     previousOperand.innerText = previousNumber + operand;
