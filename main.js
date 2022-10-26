@@ -16,18 +16,22 @@ let operand = undefined;
 //functions for the operations
 function add(previousNumber, currentNumber){
     answer = previousNumber + currentNumber;
+    currentOperand.innerText = answer;
 };
 
 function subtract(previousNumber, currentNumber){
     answer = previousNumber - currentNumber;
+    currentOperand.innerText = answer;
 };
 
 function multiply(previousNumber, currentNumber){
     answer = previousNumber * currentNumber;
+    currentOperand.innerText = answer;
 };
 
 function divide(previousNumber, currentNumber){
     answer = previousNumber / currentNumber;
+    currentOperand.innerText = answer;
 };
 
 //this function will take the numbers and an operand and call the one of the operation functions
@@ -39,10 +43,10 @@ function operate(previousNumber, currentNumber, operand){
         case "-":
             subtract(previousNumber, currentNumber);
             break;
-        case "*":
+        case "×":
             multiply(previousNumber, currentNumber);
             break;
-        case "/":
+        case "÷":
             divide(previousNumber, currentNumber);
             break;
     }
@@ -62,10 +66,16 @@ numbers.forEach(num => {
     });
 });
 
+//adds the operand and makes the current number the previous number, also puts into the previous 
+//display
 operands.forEach(opr => {
     opr.addEventListener('click', () => {
         console.log(opr.textContent)
-        operand = opr.textContent
+        operand = opr.textContent;
+        previousNumber = currentNumber;
+        previousOperand.innerText = previousNumber + operand;
+        currentNumber = "";
+        currentOperand.innerText = "";
     });
 });
 
@@ -75,4 +85,19 @@ deleteBtn.addEventListener('click', () => {
     console.log(currentNumber);
     currentNumber = currentNumber.toString().slice(0, -1);
     currentOperand.innerText = currentNumber;
+});
+
+//for clearing all the numbers and operands from the display and variables
+clearBtn.addEventListener('click', () => {
+    currentNumber = "";
+    previousNumber = "";
+    operand = undefined;
+    currentOperand.innerText = "";
+    previousOperand.innerText = "";
+});
+
+equals.addEventListener('click', () => {
+    currentNumber = parseFloat(currentNumber);
+    previousNumber = parseFloat(previousNumber);
+    operate(currentNumber, previousNumber, operand);
 });
